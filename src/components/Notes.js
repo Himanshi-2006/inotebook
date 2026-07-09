@@ -8,10 +8,10 @@ const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
 
-    let navigate = useNavigate();
+  let navigate = useNavigate();
 
   useEffect(() => {
-    if(localStorage.getItem('token')) {
+    if (localStorage.getItem("token")) {
       getNotes();
     } else {
       navigate("/login");
@@ -86,6 +86,7 @@ const Notes = (props) => {
             </div>
             <div className="modal-body">
               <form>
+                {/* Title */}
                 <div className="mb-3">
                   <label htmlFor="etitle" className="form-label">
                     Title
@@ -95,12 +96,14 @@ const Notes = (props) => {
                     className="form-control"
                     id="etitle"
                     name="etitle"
-                    minLength={3} required
+                    minLength={3}
+                    required
                     value={note.etitle}
                     aria-describedby="emailHelp"
                     onChange={onChange}
                   />
                 </div>
+                {/* Description */}
                 <div className="mb-3">
                   <label htmlFor="edescription" className="form-label">
                     Description
@@ -110,25 +113,30 @@ const Notes = (props) => {
                     className="form-control"
                     id="edescription"
                     name="edescription"
-                    minLength={5} required
+                    minLength={5}
+                    required
                     value={note.edescription}
                     onChange={onChange}
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="tag" className="form-label">
-                    Tag
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="etag"
-                    name="etag"
-                    required
-                    value={note.etag}
-                    onChange={onChange}
-                  />
-                </div>
+                {/* Tag */}
+                <select
+                  className="form-select"
+                  id="etag"
+                  name="etag"
+                  value={note.etag}
+                  onChange={onChange}
+                >
+                  <option value="">Choose Category</option>
+                  <option value="Study">📚 Study</option>
+                  <option value="Work">💼 Work</option>
+                  <option value="Personal">👤 Personal</option>
+                  <option value="Shopping">🛒 Shopping</option>
+                  <option value="Ideas">💡 Ideas</option>
+                  <option value="Goals">🎯 Goals</option>
+                  <option value="Fitness">🏋️ Fitness</option>
+                  <option value="Others">📌 Others</option>
+                </select>
               </form>
             </div>
             <div className="modal-footer">
@@ -144,7 +152,9 @@ const Notes = (props) => {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleClick}
-                disabled={note.etitle.length<3 || note.edescription.length<5}
+                disabled={
+                  note.etitle.length < 3 || note.edescription.length < 5
+                }
               >
                 Update Note
               </button>
@@ -162,7 +172,12 @@ const Notes = (props) => {
           </div>
           {notes.map((note) => {
             return (
-              <NoteItem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert}/>
+              <NoteItem
+                key={note._id}
+                updateNote={updateNote}
+                note={note}
+                showAlert={props.showAlert}
+              />
             );
           })}
         </div>

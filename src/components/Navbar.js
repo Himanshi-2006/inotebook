@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
   let navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        method: "POST",
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+      const json = await response.json();
+      setUser(json);
+    };
+    if (localStorage.getItem("token")) {
+      getUser();
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -65,9 +82,9 @@ const Navbar = () => {
               </form>
             ) : (
               <div>
-                <span className="text-light me-3">
-                  Hi, {localStorage.getItem("name")}
-                </span>
+                {user && (
+                  <span className="text-light me-3">Hi, {user.name}</span>
+                )}
                 <button className="btn btn-primary" onClick={handleLogout}>
                   Logout
                 </button>{" "}

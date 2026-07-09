@@ -27,14 +27,19 @@ const AddNote = () => {
   };
 
   return (
-    <div className="container-fluid mt-5 px-4 " >
+    <div className="container-fluid mt-5 px-4 ">
       <div
         className="card bg-light shadow p-4 w-100"
-        style={{ borderRadius: "15px", marginTop: "80px", marginBottom: "30px" }}
+        style={{
+          borderRadius: "15px",
+          marginTop: "80px",
+          marginBottom: "30px",
+        }}
       >
         <h2 className="text-center mb-4">Add a Note</h2>
-
+        
         <form>
+          {/* Title */}
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               Title
@@ -51,7 +56,7 @@ const AddNote = () => {
               onChange={onChange}
             />
           </div>
-
+          {/* Description */}
           <div className="mb-3">
             <label htmlFor="description" className="form-label">
               Description
@@ -68,21 +73,30 @@ const AddNote = () => {
               onChange={onChange}
             ></textarea>
           </div>
-
-          <div className="mb-4">
+          {/* Tag */}
+          <div className="mb-3">
             <label htmlFor="tag" className="form-label">
-              Tag
+              Category
             </label>
 
-            <input
-              type="text"
-              className="form-control"
+            <select
+              className="form-select"
               id="tag"
               name="tag"
               value={note.tag}
-              required
               onChange={onChange}
-            />
+              required
+            >
+              <option value="">Choose Category</option>
+              <option value="Study">📚 Study</option>
+              <option value="Work">💼 Work</option>
+              <option value="Personal">👤 Personal</option>
+              <option value="Shopping">🛒 Shopping</option>
+              <option value="Ideas">💡 Ideas</option>
+              <option value="Goals">🎯 Goals</option>
+              <option value="Fitness">🏋️ Fitness</option>
+              <option value="Others">📌 Others</option>
+            </select>
           </div>
 
           <div className="d-flex justify-content-center">
