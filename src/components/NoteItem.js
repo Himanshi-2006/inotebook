@@ -3,14 +3,22 @@ import noteContext from "../context/notes/noteContext";
 
 const NoteItem = (props) => {
   const context = useContext(noteContext);
-  const { deleteNote } = context;
+  const { deleteNote, pinNote } = context;
   const { note, updateNote } = props;
 
   return (
     <div className="col-md-3">
-      <div className="card my-3">
+      <div className={`card my-3 shadow ${note.isPinned ? "border border-warning border-3" : ""}`}>
         <div className="card-body">
           <div className="d-flex align-items-center">
+            <i
+              className={`fa-solid mx-2 ${
+                note.isPinned ? "fa-thumbtack text-warning" : "fa-thumbtack"
+              }`}
+              style={{ cursor: "pointer" }}
+              onClick={() => pinNote(note._id)}
+            ></i>
+
             <h5 className="card-title"> {note.title} </h5>
             <i
               className="fa-regular fa-pen-to-square mx-2"

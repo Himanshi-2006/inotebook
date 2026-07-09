@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+
   const [searchTag, setSearchTag] = useState("");
 
   let navigate = useNavigate();
@@ -40,27 +41,30 @@ const Notes = (props) => {
     });
   };
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refClose.current.click();
-    ref.current.focus();
-    props.showAlert("Updated Successfully", "Success");
+    props.showAlert("Updated Successfully", "success");
   };
 
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
 
+  // Filter by tag
   const filteredNotes = notes.filter((note) => {
-    if (searchTag === "") return true;
-
-    return note.tag === searchTag;
+    return searchTag === "" || note.tag === searchTag;
   });
+
+  // Pinned and Unpinned
+  const pinnedNotes = filteredNotes.filter((note) => note.isPinned);
+  const unPinnedNotes = filteredNotes.filter((note) => !note.isPinned);
 
   return (
     <>
       <AddNote showAlert={props.showAlert} />
 
+      {/* Hidden button for modal */}
       <button
         ref={ref}
         type="button"
@@ -68,9 +72,10 @@ const Notes = (props) => {
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
-        Launch demo modal
+        Launch Modal
       </button>
 
+      {/* Edit Modal */}
       <div
         className="modal fade"
         id="exampleModal"
@@ -84,68 +89,76 @@ const Notes = (props) => {
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Edit Note
               </h1>
+
               <button
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
               ></button>
             </div>
+
             <div className="modal-body">
               <form>
-                {/* Title */}
                 <div className="mb-3">
                   <label htmlFor="etitle" className="form-label">
                     Title
                   </label>
+
                   <input
                     type="text"
                     className="form-control"
                     id="etitle"
                     name="etitle"
+                    value={note.etitle}
                     minLength={3}
                     required
-                    value={note.etitle}
-                    aria-describedby="emailHelp"
                     onChange={onChange}
                   />
                 </div>
-                {/* Description */}
+
                 <div className="mb-3">
                   <label htmlFor="edescription" className="form-label">
                     Description
                   </label>
+
                   <input
                     type="text"
                     className="form-control"
                     id="edescription"
                     name="edescription"
+                    value={note.edescription}
                     minLength={5}
                     required
-                    value={note.edescription}
                     onChange={onChange}
                   />
                 </div>
-                {/* Tag */}
-                <select
-                  className="form-select"
-                  id="etag"
-                  name="etag"
-                  value={note.etag}
-                  onChange={onChange}
-                >
-                  <option value="">Choose Category</option>
-                  <option value="Study">📚 Study</option>
-                  <option value="Work">💼 Work</option>
-                  <option value="Personal">👤 Personal</option>
-                  <option value="Shopping">🛒 Shopping</option>
-                  <option value="Ideas">💡 Ideas</option>
-                  <option value="Goals">🎯 Goals</option>
-                  <option value="Fitness">🏋️ Fitness</option>
-                  <option value="Others">📌 Others</option>
-                </select>
+
+                <div className="mb-3">
+                  <label htmlFor="etag" className="form-label">
+                    Category
+                  </label>
+
+                  <select
+                    className="form-select"
+                    id="etag"
+                    name="etag"
+                    value={note.etag}
+                    onChange={onChange}
+                  >
+                    <option value="">Choose Category</option>
+                    <option value="Study">📚 Study</option>
+                    <option value="Work">💼 Work</option>
+                    <option value="Personal">👤 Personal</option>
+                    <option value="Shopping">🛒 Shopping</option>
+                    <option value="Ideas">💡 Ideas</option>
+                    <option value="Goals">🎯 Goals</option>
+                    <option value="Fitness">🏋️ Fitness</option>
+                    <option value="Others">📌 Others</option>
+                  </select>
+                </div>
               </form>
             </div>
+
             <div className="modal-footer">
               <button
                 ref={refClose}
@@ -155,13 +168,14 @@ const Notes = (props) => {
               >
                 Close
               </button>
+
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={handleClick}
                 disabled={
                   note.etitle.length < 3 || note.edescription.length < 5
                 }
+                onClick={handleClick}
               >
                 Update Note
               </button>
@@ -170,55 +184,67 @@ const Notes = (props) => {
         </div>
       </div>
 
-      {/* Notes mapping */}
-      <div>
-        <div className="row my-3">
-          <div className="row my-3">
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Search notes...</label>
+      {/* Notes */}
+      <div className="row my-4">
+        <div className="col-md-4 mb-3">
+          <label className="form-label fw-bold">Filter by Category</label>
 
-              <select
-                className="form-select"
-                value={searchTag}
-                onChange={(e) => setSearchTag(e.target.value)}
-              >
-                <option value="">All Categories</option>
-                <option value="Study">📚 Study</option>
-                <option value="Work">💼 Work</option>
-                <option value="Personal">👤 Personal</option>
-                <option value="Shopping">🛒 Shopping</option>
-                <option value="Ideas">💡 Ideas</option>
-                <option value="Goals">🎯 Goals</option>
-                <option value="Fitness">🏋️ Fitness</option>
-                <option value="Others">📌 Others</option>
-              </select>
-            </div>
-          </div>
-
-          <h2>Your Notes</h2>
-          <div className="conatiner">
-            {notes.length === 0 && "Write your first Note..."}
-          </div>
-          {/* {filteredNotes.map((note) => {
-            return (
-              <NoteItem
-                key={note._id}
-                updateNote={updateNote}
-                note={note}
-                showAlert={props.showAlert}
-              />
-            );
-          })} */}
-          {filteredNotes.length === 0 ? (
-            <h5 className="text-center text-muted mt-4">
-              No notes found in this category.
-            </h5>
-          ) : (
-            filteredNotes.map((note) => (
-              <NoteItem key={note._id} note={note} updateNote={updateNote} showAlert={props.showAlert} />
-            ))
-          )}
+          <select
+            className="form-select"
+            value={searchTag}
+            onChange={(e) => setSearchTag(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option value="Study">📚 Study</option>
+            <option value="Work">💼 Work</option>
+            <option value="Personal">👤 Personal</option>
+            <option value="Shopping">🛒 Shopping</option>
+            <option value="Ideas">💡 Ideas</option>
+            <option value="Goals">🎯 Goals</option>
+            <option value="Fitness">🏋️ Fitness</option>
+            <option value="Others">📌 Others</option>
+          </select>
         </div>
+
+        <h2>Your Notes</h2>
+
+        {filteredNotes.length === 0 ? (
+          <h5 className="text-center text-muted mt-4">
+            No notes found in this category.
+          </h5>
+        ) : (
+          <>
+            {pinnedNotes.length > 0 && (
+              <>
+                <h4 className="mt-3">📌 Pinned Notes</h4>
+
+                {pinnedNotes.map((note) => (
+                  <NoteItem
+                    key={note._id}
+                    note={note}
+                    updateNote={updateNote}
+                    showAlert={props.showAlert}
+                  />
+                ))}
+              </>
+            )}
+
+            {unPinnedNotes.length > 0 && (
+              <>
+                <h4 className="mt-4">📝 Other Notes</h4>
+
+                {unPinnedNotes.map((note) => (
+                  <NoteItem
+                    key={note._id}
+                    note={note}
+                    updateNote={updateNote}
+                    showAlert={props.showAlert}
+                  />
+                ))}
+              </>
+            )}
+          </>
+        )}
       </div>
     </>
   );

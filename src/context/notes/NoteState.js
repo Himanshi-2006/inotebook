@@ -97,9 +97,33 @@ const NoteState = (props) => {
     }
   };
 
+  //--------pin a note--------
+  const pinNote = async (id) => {
+    await fetch(`${host}/api/notes/pinnote/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+
+    const newNotes = notes.map((note) => {
+      if (note._id === id) {
+        return {
+          ...note,
+          isPinned: !note.isPinned,
+        };
+      }
+
+      return note;
+    });
+
+    setNotes(newNotes);
+  };
+
   return (
     <NoteContext.Provider
-      value={{ notes, addNote, deleteNote, editNote, getNotes }}
+      value={{ notes, addNote, deleteNote, editNote, getNotes, pinNote }}
     >
       {props.children}
     </NoteContext.Provider>
