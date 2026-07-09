@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+  const [searchTag, setSearchTag] = useState("");
 
   let navigate = useNavigate();
 
@@ -49,6 +50,12 @@ const Notes = (props) => {
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
+
+  const filteredNotes = notes.filter((note) => {
+    if (searchTag === "") return true;
+
+    return note.tag === searchTag;
+  });
 
   return (
     <>
@@ -166,11 +173,33 @@ const Notes = (props) => {
       {/* Notes mapping */}
       <div>
         <div className="row my-3">
+          <div className="row my-3">
+            <div className="col-md-4">
+              <label className="form-label fw-bold">Search notes...</label>
+
+              <select
+                className="form-select"
+                value={searchTag}
+                onChange={(e) => setSearchTag(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                <option value="Study">📚 Study</option>
+                <option value="Work">💼 Work</option>
+                <option value="Personal">👤 Personal</option>
+                <option value="Shopping">🛒 Shopping</option>
+                <option value="Ideas">💡 Ideas</option>
+                <option value="Goals">🎯 Goals</option>
+                <option value="Fitness">🏋️ Fitness</option>
+                <option value="Others">📌 Others</option>
+              </select>
+            </div>
+          </div>
+
           <h2>Your Notes</h2>
           <div className="conatiner">
             {notes.length === 0 && "Write your first Note..."}
           </div>
-          {notes.map((note) => {
+          {/* {filteredNotes.map((note) => {
             return (
               <NoteItem
                 key={note._id}
@@ -179,7 +208,16 @@ const Notes = (props) => {
                 showAlert={props.showAlert}
               />
             );
-          })}
+          })} */}
+          {filteredNotes.length === 0 ? (
+            <h5 className="text-center text-muted mt-4">
+              No notes found in this category.
+            </h5>
+          ) : (
+            filteredNotes.map((note) => (
+              <NoteItem key={note._id} note={note} updateNote={updateNote} showAlert={props.showAlert} />
+            ))
+          )}
         </div>
       </div>
     </>
