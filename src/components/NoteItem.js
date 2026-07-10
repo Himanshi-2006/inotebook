@@ -3,7 +3,7 @@ import noteContext from "../context/notes/noteContext";
 
 const NoteItem = (props) => {
   const context = useContext(noteContext);
-  const { deleteNote, pinNote } = context;
+  const { trashNote, pinNote } = context;
   const { note, updateNote } = props;
 
   return (
@@ -29,8 +29,8 @@ const NoteItem = (props) => {
             <i
               className="fa-regular fa-trash-can mx-2 "
               onClick={() => {
-                deleteNote(note._id);
-                props.showAlert("Deleted Successfully", "Success");
+                trashNote(note._id);
+                props.showAlert("Moved to trash Successfully", "Success");
               }}
             ></i>
           </div>

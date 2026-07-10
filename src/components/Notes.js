@@ -216,8 +216,6 @@ const Notes = (props) => {
           <>
             {pinnedNotes.length > 0 && (
               <>
-                <h4 className="mt-3">📌 Pinned Notes</h4>
-
                 {pinnedNotes.map((note) => (
                   <NoteItem
                     key={note._id}
@@ -231,8 +229,6 @@ const Notes = (props) => {
 
             {unPinnedNotes.length > 0 && (
               <>
-                <h4 className="mt-4">📝 Other Notes</h4>
-
                 {unPinnedNotes.map((note) => (
                   <NoteItem
                     key={note._id}

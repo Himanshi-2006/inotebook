@@ -41,25 +41,62 @@ const NoteState = (props) => {
     setNotes(notes.concat(note));
   };
 
-  // ---------Delete a note---------
-  const deleteNote = async (id) => {
-    // API Call
-    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+  // ---------Delete a note forever---------
+  const deleteForever = async (id) => {
+    await fetch(`${host}/api/notes/deleteforever/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token"),
       },
     });
-    const json = response.json();
-    console.log(json);
 
-    //logic for deleting a note
-    console.log(`deleting note with ${id}`);
-    const newNotes = notes.filter((note) => {
-      return note._id !== id;
+    return true;
+  };
+  
+  //---------Move note to Trash----------
+  const trashNote = async (id) => {
+    await fetch(`${host}/api/notes/trash/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
     });
-    setNotes(newNotes);
+
+    // Remove from current notes list
+    setNotes(notes.filter((note) => note._id !== id));
+  };
+
+  //-------Get trash notes--------
+  const getTrashNotes = async () => {
+    const response = await fetch(`${host}/api/notes/trash`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+
+    const json = await response.json();
+
+    return json;
+  };
+
+  //-------Restore a note---------
+  const restoreNote = async (id) => {
+    console.log("Restoring:", id);
+
+    const response = await fetch(`${host}/api/notes/restore/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+
+    const json = await response.json();
+    console.log(json);
   };
 
   // --------Edit a note----------
@@ -123,7 +160,17 @@ const NoteState = (props) => {
 
   return (
     <NoteContext.Provider
-      value={{ notes, addNote, deleteNote, editNote, getNotes, pinNote }}
+      value={{
+        notes,
+        addNote,
+        deleteForever,
+        editNote,
+        getNotes,
+        pinNote,
+        trashNote,
+        getTrashNotes,
+        restoreNote,
+      }}
     >
       {props.children}
     </NoteContext.Provider>

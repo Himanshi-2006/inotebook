@@ -66,6 +66,14 @@ const Navbar = () => {
                   About
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${location.pathname === "/trash" ? "active" : ""}`}
+                  to="/trash"
+                >
+                  🗑 Trash
+                </Link>
+              </li>
             </ul>
             {!localStorage.getItem("token") ? (
               <form className="d-flex" role="search">
