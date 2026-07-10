@@ -9,6 +9,7 @@ const Notes = (props) => {
   const { notes, getNotes, editNote } = context;
 
   const [searchTag, setSearchTag] = useState("");
+  const [sortOrder, setSortOrder] = useState("latest");
 
   let navigate = useNavigate();
 
@@ -56,9 +57,29 @@ const Notes = (props) => {
     return searchTag === "" || note.tag === searchTag;
   });
 
+  // Sort by latest and oldest date
+  const sortedNotes = [...filteredNotes].sort((a, b) => {
+    switch (sortOrder) {
+      case "latest":
+        return new Date(b.date) - new Date(a.date);
+
+      case "oldest":
+        return new Date(a.date) - new Date(b.date);
+
+      case "az":
+        return a.title.localeCompare(b.title);
+
+      case "za":
+        return b.title.localeCompare(a.title);
+
+      default:
+        return 0;
+    }
+  });
+
   // Pinned and Unpinned
-  const pinnedNotes = filteredNotes.filter((note) => note.isPinned);
-  const unPinnedNotes = filteredNotes.filter((note) => !note.isPinned);
+  const pinnedNotes = sortedNotes.filter((note) => note.isPinned);
+  const unPinnedNotes = sortedNotes.filter((note) => !note.isPinned);
 
   return (
     <>
@@ -186,24 +207,43 @@ const Notes = (props) => {
 
       {/* Notes */}
       <div className="row my-4">
-        <div className="col-md-4 mb-3">
-          <label className="form-label fw-bold">Filter by Category</label>
+        <div className="row my-3">
+          {/* Search */}
+          <div className="col-md-4">
+            <label className="form-label fw-bold">Search by Category</label>
 
-          <select
-            className="form-select"
-            value={searchTag}
-            onChange={(e) => setSearchTag(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            <option value="Study">📚 Study</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">👤 Personal</option>
-            <option value="Shopping">🛒 Shopping</option>
-            <option value="Ideas">💡 Ideas</option>
-            <option value="Goals">🎯 Goals</option>
-            <option value="Fitness">🏋️ Fitness</option>
-            <option value="Others">📌 Others</option>
-          </select>
+            <select
+              className="form-select"
+              value={searchTag}
+              onChange={(e) => setSearchTag(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="Study">📚 Study</option>
+              <option value="Work">💼 Work</option>
+              <option value="Personal">👤 Personal</option>
+              <option value="Shopping">🛒 Shopping</option>
+              <option value="Ideas">💡 Ideas</option>
+              <option value="Goals">🎯 Goals</option>
+              <option value="Fitness">🏋️ Fitness</option>
+              <option value="Others">📌 Others</option>
+            </select>
+          </div>
+
+          {/* Sort */}
+          <div className="col-md-4">
+            <label className="form-label fw-bold">Sort Notes</label>
+
+            <select
+              className="form-select"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="latest">🆕 Latest First</option>
+              <option value="oldest">📜 Oldest First</option>
+              <option value="az">🔤 Title (A-Z)</option>
+              <option value="za">🔠 Title (Z-A)</option>
+            </select>
+          </div>
         </div>
 
         <h2>Your Notes</h2>
