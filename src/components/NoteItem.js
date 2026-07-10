@@ -6,11 +6,71 @@ const NoteItem = (props) => {
   const { trashNote, pinNote } = context;
   const { note, updateNote } = props;
 
+  const getTagColor = (tag) => {
+    switch (tag) {
+      case "Study":
+        return "primary"; // Blue
+
+      case "Work":
+        return "warning"; // Yellow
+
+      case "Personal":
+        return "success"; // Green
+
+      case "Shopping":
+        return "danger"; // Red
+
+      case "Ideas":
+        return "info"; // Cyan
+
+      case "Goals":
+        return "dark"; // Black
+
+      case "Fitness":
+        return "secondary"; // Gray
+
+      default:
+        return "light";
+    }
+  };
+
+  const getBorderColor = (tag) => {
+    switch (tag) {
+      case "Study":
+        return "#0d6efd";
+
+      case "Work":
+        return "#ffc107";
+
+      case "Personal":
+        return "#198754";
+
+      case "Shopping":
+        return "#dc3545";
+
+      case "Ideas":
+        return "#0dcaf0";
+
+      case "Goals":
+        return "#212529";
+
+      case "Fitness":
+        return "#6c757d";
+
+      default:
+        return "#adb5bd";
+    }
+  };
+
   return (
     <div className="col-md-3">
-      <div className={`card my-3 shadow ${note.isPinned ? "border border-warning border-3" : ""}`}>
+      <div
+        className={`card my-3 shadow ${note.isPinned ? "border border-warning border-3" : ""} `}
+        style={{ borderLeft: `6px solid ${getBorderColor(note.tag)}` }}
+      >
         <div className="card-body">
           <div className="d-flex align-items-center">
+            {/* Pin Icon */}
             <i
               className={`fa-solid mx-2 ${
                 note.isPinned ? "fa-thumbtack text-warning" : "fa-thumbtack"
@@ -18,14 +78,16 @@ const NoteItem = (props) => {
               style={{ cursor: "pointer" }}
               onClick={() => pinNote(note._id)}
             ></i>
-
+            {/* Title */}
             <h5 className="card-title"> {note.title} </h5>
+            {/* Edit icon */}
             <i
               className="fa-regular fa-pen-to-square mx-2"
               onClick={() => {
                 updateNote(note);
               }}
             ></i>
+            {/* Delete Icon */}
             <i
               className="fa-regular fa-trash-can mx-2 "
               onClick={() => {
@@ -34,12 +96,18 @@ const NoteItem = (props) => {
               }}
             ></i>
           </div>
-
+          {/* Description */}
           <p className="card-text">{note.description}</p>
-
-          <p className="mt-2">
-            <span className="badge bg-primary">{note.tag}</span>
-          </p>
+          {/* Tag */}
+          <span
+            className={`badge ${
+              note.tag === "Others"
+                ? "bg-light text-dark border"
+                : `bg-${getTagColor(note.tag)}`
+            }`}
+          >
+            {note.tag}
+          </span>
         </div>
       </div>
     </div>
