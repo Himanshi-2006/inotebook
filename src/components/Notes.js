@@ -3,6 +3,7 @@ import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
 
 const Notes = (props) => {
   const context = useContext(noteContext);
@@ -80,6 +81,39 @@ const Notes = (props) => {
   // Pinned and Unpinned
   const pinnedNotes = sortedNotes.filter((note) => note.isPinned);
   const unPinnedNotes = sortedNotes.filter((note) => !note.isPinned);
+
+  const exportPDF = () => {
+    const doc = new jsPDF();
+
+    doc.setFontSize(20);
+    doc.text("iNotebook", 20, 20);
+
+    doc.setFontSize(12);
+
+    let y = 35;
+
+    filteredNotes.forEach((note, index) => {
+      doc.text(`${index + 1}. ${note.title}`, 20, y);
+
+      y += 8;
+
+      doc.text(`Category: ${note.tag}`, 25, y);
+
+      y += 8;
+
+      doc.text(`Description: ${note.description}`, 25, y);
+
+      y += 15;
+
+      // New page if required
+      if (y > 270) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    doc.save("MyNotes.pdf");
+  };
 
   return (
     <>
@@ -244,6 +278,12 @@ const Notes = (props) => {
               <option value="za">🔠 Title (Z-A)</option>
             </select>
           </div>
+        </div>
+
+        <div className="col-md-4 my-3">
+          <button className="btn btn-danger" onClick={exportPDF}>
+            📄 Export Notes
+          </button>
         </div>
 
         <h2>Your Notes</h2>
