@@ -9,6 +9,7 @@ import NoteState from "./context/notes/NoteState";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Trash from "./components/Trash";
+import Dashboard from "./components/Dashboard";
 import { useState } from "react";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
               <Route exact path="/login" element={<Login showAlert={showAlert}/>} />
               <Route exact path="/signup" element={<Signup showAlert={showAlert}/>} />
               <Route exact path="/trash" element={<Trash />} />
+              <Route exact path="/dashboard" element={<Dashboard />} />
             </Routes>
           </div>
         </BrowserRouter>

@@ -50,6 +50,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
+                {/* Home */}
                 <Link
                   className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
                   aria-current="page"
@@ -58,6 +59,7 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
+              {/* About */}
               <li className="nav-item">
                 <Link
                   className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
@@ -66,6 +68,13 @@ const Navbar = () => {
                   About
                 </Link>
               </li>
+              {/* Dashboard */}
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard">
+                  Dashboard
+                </Link>
+              </li>
+              {/* Trash */}
               <li className="nav-item">
                 <Link
                   className={`nav-link ${location.pathname === "/trash" ? "active" : ""}`}
@@ -75,6 +84,7 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
+            {/* Login and Signup */}
             {!localStorage.getItem("token") ? (
               <form className="d-flex" role="search">
                 <Link

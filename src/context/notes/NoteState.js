@@ -53,7 +53,7 @@ const NoteState = (props) => {
 
     return true;
   };
-  
+
   //---------Move note to Trash----------
   const trashNote = async (id) => {
     await fetch(`${host}/api/notes/trash/${id}`, {
