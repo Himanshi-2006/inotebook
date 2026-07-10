@@ -10,7 +10,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Trash from "./components/Trash";
 import Dashboard from "./components/Dashboard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const [alert, setAlert] = useState(null);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const location = useLocation();
   let navigate = useNavigate();
 
@@ -84,6 +84,7 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
+
             {/* Login and Signup */}
             {!localStorage.getItem("token") ? (
               <form className="d-flex" role="search">
