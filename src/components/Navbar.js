@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 const Navbar = (props) => {
   const location = useLocation();
   let navigate = useNavigate();
+  const host = "https://inotebook-backend-dzpx.onrender.com";
 
   const [user, setUser] = useState(null);
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch("http://localhost:5000/api/auth/getuser", {
+      const response = await fetch(`${host}/api/auth/getuser`, {
         method: "POST",
         headers: {
           "auth-token": localStorage.getItem("token"),
