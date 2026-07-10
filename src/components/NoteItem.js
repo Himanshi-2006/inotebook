@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import noteContext from "../context/notes/noteContext";
+import ReactMarkdown from "react-markdown";
+import "github-markdown-css/github-markdown.css";
 
 const NoteItem = (props) => {
   const context = useContext(noteContext);
@@ -97,7 +99,9 @@ const NoteItem = (props) => {
             ></i>
           </div>
           {/* Description */}
-          <p className="card-text">{note.description}</p>
+          <p className="card-text">
+            <ReactMarkdown>{note.description}</ReactMarkdown>
+          </p>
           {/* Tag */}
           <span
             className={`badge ${

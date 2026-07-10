@@ -154,11 +154,11 @@ const Notes = (props) => {
 
             <div className="modal-body">
               <form>
+                {/* eTitle */}
                 <div className="mb-3">
                   <label htmlFor="etitle" className="form-label">
                     Title
                   </label>
-
                   <input
                     type="text"
                     className="form-control"
@@ -171,28 +171,33 @@ const Notes = (props) => {
                   />
                 </div>
 
+                {/* eDescription */}
+                <small className="text-muted">
+                  Supports Markdown. Example:
+                  <strong> # Heading </strong>,<strong> **bold** </strong>,
+                  <strong> - list </strong>,<strong> `code` </strong>
+                </small>
                 <div className="mb-3">
                   <label htmlFor="edescription" className="form-label">
                     Description
                   </label>
-
-                  <input
-                    type="text"
+                  <textarea
                     className="form-control"
                     id="edescription"
                     name="edescription"
+                    rows="4"
                     value={note.edescription}
                     minLength={5}
                     required
                     onChange={onChange}
-                  />
+                  ></textarea>
                 </div>
 
+                {/* ecatregory */}
                 <div className="mb-3">
                   <label htmlFor="etag" className="form-label">
                     Category
                   </label>
-
                   <select
                     className="form-select"
                     id="etag"

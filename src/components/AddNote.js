@@ -37,7 +37,7 @@ const AddNote = () => {
         }}
       >
         <h2 className="text-center mb-4">Add a Note</h2>
-        
+
         <form>
           {/* Title */}
           <div className="mb-3">
@@ -57,11 +57,15 @@ const AddNote = () => {
             />
           </div>
           {/* Description */}
+          <small className="text-muted">
+            Supports Markdown. Example:
+            <strong> # Heading </strong>,<strong> **bold** </strong>,
+            <strong> - list </strong>,<strong> `code` </strong>
+          </small>
           <div className="mb-3">
             <label htmlFor="description" className="form-label">
               Description
             </label>
-
             <textarea
               className="form-control"
               id="description"
@@ -73,12 +77,12 @@ const AddNote = () => {
               onChange={onChange}
             ></textarea>
           </div>
+
           {/* Tag */}
           <div className="mb-3">
             <label htmlFor="tag" className="form-label">
               Category
             </label>
-
             <select
               className="form-select"
               id="tag"
